@@ -1,0 +1,226 @@
+<!-- main-content -->
+<div class="main-content app-content">
+    <div class="container" id="main-container">
+    
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="employe"><b><i class="si si-layers"></i> Liste des employe</b></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <button type="button" class="btn btn-info"   data-toggle="modal" data-target="#addEmployeModal"><i class="si si-plus"></i> Ajouter  </button>
+          </div>
+      </div>
+      <!-- <div class="container-fluid" id="searchbar">
+          <input (ngModelChange)="searchBy(key.value)" ngModel #key="ngModel" type="search" name="key" id="searchName" class="form-control mr-sm-5" placeholder="Rechercher professeurs..." required>
+      | orderBy: key1: reverse | paginate: {itemsPerPage:3,currentPage:p
+      
+        </div> -->
+    </nav>
+      
+      
+    <div class="col-md-12"> 
+      <table class="table">
+      <thead class="thead-dark">
+          <tr>
+          
+          <th scope="col">Image</th>
+          <th scope="col">fullname</th>
+          <th scope="col">age</th>
+          <th scope="col">Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let emp of emplList" class="tab-sub">
+                  <td>{{emp.id}}</td>
+                  <td><img (error) ="changeSource($event)" [src]="emp.image" class="rounded-circle" width="50px" height="50px" /></td>
+                  <td>{{emp.fullName}}</td>
+                  <td>{{emp.age}}</td>
+                 
+                  
+                  
+                  <td>
+                      <button type="button" class="btn btn-warning btn-floating me-1" data-mdb-ripple-color="dark" data-toggle="modal" data-target="#updateEmployeModal" (click)="getEmploye(emp.id)"><i class="si si-note"></i> </button>
+                      <button type="button" class="btn btn-danger btn-floating me-1" (click)="deleteEmploye(emp.id)" ><i class="si si-trash"></i> </button>
+                      <button type="button" class="btn btn-success btn-floating me-1" data-toggle="modal" data-target="#viewEmployeModal" (click)="viewEmployee(emp.id)"><i class="si si-eye"></i> </button>
+                  </td>
+          </tr>
+      </tbody>
+      </table>
+      <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+      </div>
+    </div>
+
+
+    <!-- Modal Add Teacher -->
+<div class="modal fade" id="addEmployeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeModalName" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEmployeModalName" >Ajout du emloye </h5>
+          <button #closeModalBtn type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body col-md-12">
+       <!-- form add -->
+       <form [formGroup]="emplFormGroup" >
+        <div class="form-group row mb-3">
+          <button (click)="fileInput.click()" style="background-color: transparent; border: none;">
+            <img (error) ="changeSource($event)" [src]="imgUrl" class="rounded-circle" width="100px" height="100px" />
+            <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)" formControlName="image" name="image">
+          </button>
+          <small *ngIf="submitted && emplFormGroup.get('image')?.invalid" class="text-danger">Image est obligatoire</small>
+        </div>
+      
+        <div class="form-group row mb-3">
+            <div class="col">
+                <label for="exampleFormControlInput1">fullname</label>
+          <input
+          class="form-control"
+          id="fullName"
+          required
+          formControlName="fullName"
+          name="fullName"
+          type="string"
+        />
+        <small *ngIf="submitted && emplFormGroup.get('fullName')?.invalid" class="text-danger">fullName est obligatoire</small>
+            </div>
+            <div class="col">
+                <label for="exampleFormControlInput1">age</label>
+          <input
+          class="form-control"
+          id="age"
+          required
+          formControlName="age"
+          name="age"
+          type="string"
+        />
+        <small *ngIf="submitted && emplFormGroup.get('age')?.invalid" class="text-danger">age est obligatoire</small>
+            </div>
+        </div>
+   
+        
+
+       
+
+        
+  
+         <button class="btn btn-primary" (click)="addEmployee()" >Ajouter</button>
+         
+      </form>
+     
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+
+      <!-- Modal Update Teacher -->
+<div class="modal fade" id="updateEmployeModal" tabindex="-1" role="dialog" aria-labelledby="updateNEmployeModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateNEmployeModal" >Modification du professeur </h5>
+        <button #closeUpdateModalBtn type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body col-md-12">
+     <!--formControlName="employe.image form add -->
+     <form [formGroup]="emplFormGroup2" >
+      <div class="form-group row mb-3">
+        <button (click)="fileInput.click()" style="background-color: transparent; border: none;">
+          <img (error) ="changeSource($event)" [src]="imgUrl"  class="rounded-circle" width="100px" height="100px" />
+          <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)"  name="image">
+        </button>
+        <small *ngIf="submitted && emplFormGroup2.get('image')?.invalid" class="text-danger">Image est obligatoire</small>
+      </div>
+    
+     
+      <div class="form-group row mb-3">
+        <div class="col">
+            <label for="exampleFormControlInput1">fullname</label>
+      <input
+      class="form-control"
+      id="fullName"
+      required
+      formControlName="fullName"
+      name="fullName"
+      type="string"
+    />
+    <small *ngIf="submitted && emplFormGroup.get('fullName')?.invalid" class="text-danger">fullName est obligatoire</small>
+        </div>
+        <div class="col">
+            <label for="exampleFormControlInput1">age</label>
+      <input
+      class="form-control"
+      id="age"
+      required
+      formControlName="age"
+      name="age"
+      type="string"
+    />
+    <small *ngIf="submitted && emplFormGroup.get('age')?.invalid" class="text-danger">age est obligatoire</small>
+        </div>
+    </div>
+
+
+       <button class="btn btn-primary" (click)="updateEmploye()" >Modifier</button>
+       
+    </form>
+   
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<!-- Modal View Teacher -->
+<div class="modal fade" id="viewEmployeModal" tabindex="-1" role="dialog" aria-labelledby="viewTeacherModalName"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="viewTeacherModalName">Détails du Employe</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- form View -->
+      <form >
+        <div class="form-group row mb-3">
+          <div class="col">
+
+            <div class="form-group">
+              <label><b>{{employe!.fullName}}  </b></label> 
+            </div>
+            <img (error) ="changeSource($event)" [src]="employe.image" class="rounded-circle" width="100px" height="100px" />
+          </div>
+          <div class="col">
+
+
+        <div class="form-group">
+          <label><b>age: </b></label> {{employe!.age}}
+        </div>
+
+       
+          </div>
+
+      </div>
+
+    </form>
+
+    </div>
+
+  </div>
+</div>
+</div>
+    
+
+    </div>
+    <!-- main-content closed -->
+    
